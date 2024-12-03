@@ -69,3 +69,95 @@ tooltip label {
 tooltip > * {
   padding: 0.125em 0.25em;
 }
+
+menuitem {
+  min-height: 20px;
+  min-width: 40px;
+  background-clip: border-box;
+
+  arrow {
+    min-height: 16px;
+    min-width: 16px;
+    -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+    margin-left: 8px;
+  }
+
+  separator {
+    min-height: 1px;
+    margin: 4px 0;
+    background-color: variables.$background-alt;
+  }
+}
+
+menu > arrow {
+  min-height: 16px;
+  min-width: 16px;
+  padding: 4px;
+  color: variables.$background-alt;
+}
+
+menu > arrow.top {
+  margin-top: 0;
+  border-radius: 6px;
+  -gtk-icon-source: -gtk-icontheme("pan-up-symbolic");
+}
+
+menu > arrow.bottom {
+  margin-top: 8px;
+  margin-bottom: -12px;
+  border-radius: 6px;
+  -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+}
+
+check,
+radio {
+  min-height: 15px;
+  min-width: 15px;
+  margin: 4px;
+  padding: 0;
+  background-color: variables.$background-alt;
+  border-radius: 9999px;
+  transition:
+    all 75ms cubic-bezier(0, 0, 0.2, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+check {
+  border-radius: 4px;
+}
+
+check:hover,
+radio:hover {
+  box-shadow: 0 0 0 4px transparentize(variables.$background-dark, 0.9);
+  background-color: variables.$background-dark;
+}
+
+check:active,
+radio:active {
+  box-shadow: 0 0 0 4px transparentize(variables.$background-dark, 0.9);
+  background-color: variables.$background-dark;
+}
+
+check:checked,
+check:indeterminate,
+radio:checked,
+radio:indeterminate {
+  color: variables.$background-dark;
+  background-color: variables.$text-main;
+}
+
+check:checked:hover,
+check:indeterminate:hover,
+radio:checked:hover,
+radio:indeterminate:hover {
+  box-shadow: 0 0 0 4px transparentize(variables.$text-main, 0.9);
+  background-color: variables.$text-main;
+}
+
+check:checked:active,
+check:indeterminate:active,
+radio:checked:active,
+radio:indeterminate:active {
+  box-shadow: 0 0 0 4px transparentize(variables.$text-main, 0.9);
+  background-color: variables.$text-main;
+}

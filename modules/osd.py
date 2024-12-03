@@ -41,12 +41,13 @@ class BrightnessOSDContainer(Box):
     def __init__(self, **kwargs):
         super().__init__(**kwargs, orientation="h", spacing=12, name="osd-container")
         self.brightness_service = Brightness()
-        self.level = Label()
+        self.level = Label(name="osd-level")
         self.icon = Image(icon_name="display-brightness-symbolic", icon_size=28)
         self.scale = self._create_brightness_scale()
 
         self.add(self.icon)
         self.add(self.scale)
+        self.add(self.level)
 
         self.update_brightness()
 
