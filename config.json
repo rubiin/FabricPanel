@@ -10,14 +10,16 @@
     "disabled_icon": "󰛨",
     "icon_size": "12px",
     "enable_label": false,
-    "enable_tooltip": true
+    "enable_tooltip": true,
+    "interval": 2000
   },
   "hypridle": {
     "enabled_icon": "",
     "disabled_icon": "",
     "icon_size": "12px",
     "enable_label": false,
-    "enable_tooltip": true
+    "enable_tooltip": true,
+    "interval": 2000
   },
   "battery": {
     "enable_label": true,
@@ -54,11 +56,10 @@
     "enable_icon": true
   },
   "updates": {
-    "os": "arch",
-    "icon": "󱧘",
-    "icon_size": "14px"
+    "os": "arch"
   },
   "weather": {
-    "location": "Kathmandu"
+    "location": "Kathmandu",
+    "enable_tooltip": true
   }
 }

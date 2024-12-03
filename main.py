@@ -9,7 +9,7 @@ from modules.osd import OSDContainer
 from utils.functions import ExecutableNotFoundError, executable_exists
 
 
-def compile_apply_style(app: Application):
+def process_and_apply_css(app: Application):
     if not executable_exists("sass"):
         raise ExecutableNotFoundError(
             "sass"
@@ -36,9 +36,9 @@ if __name__ == "__main__":
 
     # Monitor styles folder for changes
     main_css_file = monitor_file(get_relative_path("styles"))
-    main_css_file.connect("changed", lambda *_: compile_apply_style(app))
+    main_css_file.connect("changed", lambda *_: process_and_apply_css(app))
 
-    compile_apply_style(app)
+    process_and_apply_css(app)
 
     # Run the application
     app.run()

@@ -2,44 +2,27 @@ import threading
 
 from fabric.utils import invoke_repeater
 from fabric.widgets.box import Box
-from fabric.widgets.button import Button
 from fabric.widgets.label import Label
 from loguru import logger
 
 from services.weather import WeatherInfo
-from shared.popup import PopupWindow
+from utils.config import Config
 
 
-class WeatherMenu(Box):
-    """A widget to display the weather menu."""
-
-    def __init__(self, **kwargs):
-        super().__init__(orientation="v", name="weather-menu", **kwargs)
-        self.children = Label(label="Prayer Times", style_classes="panel-text")
-
-
-sample_popup = PopupWindow(
-    transition_duration=350,
-    anchor="top-right",
-    transition_type="slide-down",
-    child=WeatherMenu(),
-    enable_inhibitor=True,
-)
-
-
-class Weather(Button):
+class Weather(Box):
     """A widget to display the current weather."""
 
     def __init__(
         self,
-        city: str,
-        interval: int = 60000,
-        enable_tooltip=True,
+        config: Config,
     ):
         # Initialize the Box with specific name and style
         super().__init__(name="weather", style_classes="panel-box")
-        self.enable_tooltip = enable_tooltip
-        self.city = city
+
+        self.config = config["weather"]
+
+        self.enable_tooltip = self.config["enable_tooltip"]
+        self.city = self.config["location"]
 
         self.weather_label = Label(
             label="Fetching weather...",
@@ -47,10 +30,9 @@ class Weather(Button):
         )
         self.children = self.weather_label
 
-        self.connect("clicked", lambda *_: (sample_popup.toggle_popup()))
 
         # Set up a repeater to call the update_label method at specified intervals
-        invoke_repeater(interval, self.update_label, initial_call=True)
+        invoke_repeater(self.config["interval"], self.update_label, initial_call=True)
 
     def update_label(self):
         weather_thread = threading.Thread(

@@ -1,9 +1,89 @@
+
 from typing import List, TypedDict
 
 from utils.functions import read_config
 
+# Default configuration values
+DEFAULT_CONFIG = {
+    "layout": {
+        "left": ["workspaces", "windowtitle"],
+        "middle": ["datetime", "player"],
+        "right": ["weather", "battery","system_tray", "updates", "hypridle", "hyprsunset"]
+    },
+    "hyprsunset": {
+        "temperature": "2800k",
+        "enabled_icon": "󱩌",
+        "disabled_icon": "󰛨",
+        "icon_size": "12px",
+        "enable_label": False,
+        "enable_tooltip": True
+    },
+    "hypridle": {
+        "enabled_icon": "",
+        "disabled_icon": "",
+        "icon_size": "12px",
+        "enable_label": False,
+         "enable_tooltip": True
+    },
+    "battery": {
+        "enable_label": True,
+        "enable_tooltip": True,
+        "interval": 2000
+    },
+    "cpu": {
+        "icon": "",
+        "icon_size": "12px",
+        "enable_label": False,
+        "enable_tooltip": True,
+        "interval": 2000
+    },
+    "memory": {
+        "icon": "",
+        "icon_size": "12px",
+        "enable_label": False,
+        "enable_tooltip": True,
+        "interval": 2000
+    },
+    "storage": {
+        "icon": "󰋊",
+        "icon_size": "14px",
+        "enable_label": False,
+        "enable_tooltip": True,
+        "interval": 2000
+    },
+    "workspaces": {
+        "count": 8,
+        "occupied": True
+    },
+    "window": {
+        "length": 20,
+        "enable_icon": True
+    },
+    "updates": {
+        "os": "arch",
+        "icon": "󱧘",
+        "icon_size": "14px"
+    },
+    "weather": {
+        "location": "Kathmandu"
+    }
+}
+
+
+
+
+
+
+
+
 # Define the TypedDict types for various configurations
 
+class BaseConfig(TypedDict):
+    """Common configuration for some sections"""
+    icon_size: str
+    enable_label: bool
+    enable_tooltip: bool
+    interval: int
 
 # Layout configuration for different sections of the bar
 class Layout(TypedDict):
@@ -15,31 +95,27 @@ class Layout(TypedDict):
 
 
 # Configuration for HyprSunset
-class HyprSunset(TypedDict):
+class HyprSunset(TypedDict,BaseConfig):
     """Configuration for Window"""
 
     temperature: str
     enabled_icon: str
     disabled_icon: str
-    icon_size: str
-    enable_label: bool
-    enable_tooltip: bool
+
 
 
 # Configuration for HyprIdle
-class HyprIdle(TypedDict):
-    """Configuration for Window"""
+class HyprIdle(TypedDict,BaseConfig):
+    """Configuration for hypridle"""
 
     enabled_icon: str
     disabled_icon: str
-    icon_size: str
-    enable_label: bool
-    enable_tooltip: bool
+
 
 
 # Configuration for Battery
 class Battery(TypedDict):
-    """Configuration for Window"""
+    """Configuration for battery"""
 
     enable_label: bool
     enable_tooltip: bool
@@ -47,47 +123,37 @@ class Battery(TypedDict):
 
 
 # Configuration for CPU
-class Cpu(TypedDict):
-    """Configuration for Window"""
+class Cpu(TypedDict,BaseConfig):
+    """Configuration for Cpu"""
 
     icon: str
-    icon_size: str
-    enable_label: bool
-    enable_tooltip: bool
-    interval: int
 
 
 # Configuration for Memory
-class Memory(TypedDict):
-    """Configuration for Window"""
+class Memory(TypedDict, BaseConfig):
+    """Configuration for window"""
 
     icon: str
-    icon_size: str
-    enable_label: bool
-    enable_tooltip: bool
-    interval: int
+
 
 
 # Configuration for Storage
-class Storage(TypedDict):
-    """Configuration for Window"""
+class Storage(TypedDict, BaseConfig):
+    """Configuration for storage"""
 
     icon: str
-    icon_size: str
-    enable_label: bool
-    enable_tooltip: bool
-    interval: int
+
 
 
 # Configuration for Workspaces
 class Workspaces(TypedDict):
-    """Configuration for Window"""
+    """Configuration for Workspaces"""
 
     count: int
 
 
 # Configuration for Window
-class Window(TypedDict):
+class WindowTitle(TypedDict):
     """Configuration for Window"""
 
     length: int
@@ -95,19 +161,21 @@ class Window(TypedDict):
 
 
 # Configuration for Updates
-class Updates(TypedDict):
+class Updates(TypedDict,BaseConfig):
     """Configuration for Updates"""
-
     os: str
     icon: str
-    icon_size: str
+
 
 
 # Configuration for Weather
 class Weather(TypedDict):
-    """Configuration for Window"""
+    """Configuration for weather"""
 
     location: str
+    interval: int
+    enable_tooltip: bool
+    enable_label: bool
 
 
 # Main configuration that includes all other configurations
@@ -122,7 +190,7 @@ class Config(TypedDict):
     memory: Memory
     storage: Storage
     workspaces: Workspaces
-    window: Window
+    window: WindowTitle
     updates: Updates
     weather: Weather
 
@@ -130,19 +198,20 @@ class Config(TypedDict):
 # Read the configuration from the JSON file
 parsed_data = read_config()
 
+
+# Merge the parsed data with the default configuration
+def merge_defaults(data: dict, defaults: dict):
+    return {**defaults, **data}
+
+
 # Now, `parsed_data` is a Python dictionary
 # You can access individual items like this:
 layout = parsed_data["layout"]
-hyprsunset = parsed_data["hyprsunset"]
-hypridle = parsed_data["hypridle"]
-battery = parsed_data["battery"]
-cpu = parsed_data["cpu"]
-memory = parsed_data["memory"]
-storage = parsed_data["storage"]
-workspaces = parsed_data["workspaces"]
-window = parsed_data["window"]
-updates = parsed_data["updates"]
-weather = parsed_data["weather"]
+
+for key, value in parsed_data.items():
+    if key in DEFAULT_CONFIG:
+        parsed_data[key] = merge_defaults(value, DEFAULT_CONFIG[key])
+
 
 # Optionally, cast the parsed data to match our TypedDict using type hints
 config: Config = parsed_data
