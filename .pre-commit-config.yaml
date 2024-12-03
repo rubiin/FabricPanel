@@ -47,4 +47,4 @@ repos:
         name: Detect secrets
         description: Detects high entropy strings that are likely to be passwords.
 
-default_stages: [pre-commit, pre-push]
+default_stages: [pre-commit]
