@@ -124,6 +124,7 @@ radio {
 
 check {
   border-radius: 4px;
+  -gtk-icon-source: -gtk-icontheme("checkmark"); // TODO: find a better solution
 }
 
 check:hover,
