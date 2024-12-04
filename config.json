@@ -1,10 +1,10 @@
 {
   "layout": {
-    "left": ["workspaces", "windowtitle"],
+    "left": ["workspaces", "window_title"],
     "middle": ["datetime", "player"],
     "right": ["cpu", "memory"]
   },
-  "hyprsunset": {
+  "hypr_sunset": {
     "temperature": "2800k",
     "enabled_icon": "󱩌",
     "disabled_icon": "󰛨",
@@ -13,7 +13,7 @@
     "enable_tooltip": true,
     "interval": 2000
   },
-  "hypridle": {
+  "hypr_idle": {
     "enabled_icon": "",
     "disabled_icon": "",
     "icon_size": "12px",
@@ -51,7 +51,7 @@
     "count": 8,
     "occupied": true
   },
-  "window": {
+  "window_title": {
     "length": 20,
     "enable_icon": true
   },
@@ -60,6 +60,12 @@
   },
   "weather": {
     "location": "Kathmandu",
+    "enable_tooltip": true
+  },
+  "keyboard": {
+    "icon": "󰌌",
+    "icon_size": "14px",
+    "enable_label": false,
     "enable_tooltip": true
   }
 }

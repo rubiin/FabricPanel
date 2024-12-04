@@ -5,6 +5,7 @@ from fabric.widgets.eventbox import EventBox
 from fabric.widgets.label import Label
 from fabric.widgets.revealer import Revealer
 
+from utils.config import BarConfig
 from utils.icons import ICONS
 
 
@@ -13,12 +14,11 @@ class Mpris(EventBox):
 
     def __init__(
         self,
-        length=30,
-        enable_tooltip=True,
+        config: BarConfig,
     ) -> None:
         # Initialize the EventBox with specific name and style
         super().__init__(name="mpris")
-        self.enable_tooltip = enable_tooltip
+        self.config = config["player"]
 
         self.label = Label(label="Nothing playing", style_classes="panel-text")
         self.text_icon = Label(label=ICONS["play"], style="padding: 0 10px;")
@@ -39,7 +39,6 @@ class Mpris(EventBox):
         )
 
         self.children = self.box
-        self.length = length
 
         # Connect the button press event to the play_pause method
         bulk_connect(
@@ -69,19 +68,27 @@ class Mpris(EventBox):
 
     def get_current(self, value):
         # Get the current player info and status
-        info = value["info"] if len(value["info"]) < self.length else value["info"][:30]
+        info = value["info"]
+        trucated_info = (
+            value["info"]
+            if len(value["info"]) < self.config["length"]
+            else value["info"][:30]
+        )
         status = value["status"]
+
+        if self.config["enable_tooltip"]:
+            self.set_tooltip_text(info)
 
         # Update the label and icon based on the player status
         if status == "Playing":
             self.set_visible(True)
             self.text_icon.set_label(ICONS["pause"])
-            self.label.set_label(info)
+            self.label.set_label(trucated_info)
 
         elif status == "Paused":
             self.set_visible(True)
             self.text_icon.set_label(ICONS["play"])
-            self.label.set_label(info)
+            self.label.set_label(trucated_info)
 
         else:
             self.set_visible(False)

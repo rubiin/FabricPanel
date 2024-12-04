@@ -10,6 +10,7 @@ class HyprSunset(Button):
         super().__init__(**kwargs)
         # Store the configuration for hyprsunset
         self.config = config["hyprsunset"]
+
         # Set the command to adjust the screen temperature
         self.command = f"hyprsunset -t {self.config['temperature']}"
 

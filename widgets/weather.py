@@ -6,7 +6,7 @@ from fabric.widgets.label import Label
 from loguru import logger
 
 from services.weather import WeatherInfo
-from utils.config import Config
+from utils.config import BarConfig
 
 
 class Weather(Box):
@@ -14,22 +14,17 @@ class Weather(Box):
 
     def __init__(
         self,
-        config: Config,
+        config: BarConfig,
     ):
         # Initialize the Box with specific name and style
         super().__init__(name="weather", style_classes="panel-box")
 
         self.config = config["weather"]
-
-        self.enable_tooltip = self.config["enable_tooltip"]
-        self.city = self.config["location"]
-
         self.weather_label = Label(
             label="Fetching weather...",
             style_classes="panel-text",
         )
         self.children = self.weather_label
-
 
         # Set up a repeater to call the update_label method at specified intervals
         invoke_repeater(self.config["interval"], self.update_label, initial_call=True)
@@ -37,7 +32,7 @@ class Weather(Box):
     def update_label(self):
         weather_thread = threading.Thread(
             target=self.fetch_weather_in_thread,
-            args=(self.city,),
+            args=(self.config["location"]),
         )
         weather_thread.start()
         # Continue running the main program (non-blocking)

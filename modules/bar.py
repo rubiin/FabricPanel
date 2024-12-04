@@ -43,83 +43,58 @@ class StatusBar(Window):
             all_visible=False,
         )
 
-        self.config = config
-
-        battery_config = config["battery"]
-        cpu_config = config["cpu"]
-        updates_config = config["updates"]
-        updates_config = config["updates"]
-
         # TODO: fix this . This is initialized by default
         self.widgets_list = {
             # Workspaces: Displays the list of workspaces or desktops
-            "workspaces": WorkSpaces(),
+            "workspaces": WorkSpaces(config),
+            "system_tray": SystemTray(config),
             "taskbar": TaskBar(),
-            "keyboard": KeyboardLayout(),
+            "keyboard": KeyboardLayout(config),
             # WindowTitle: Shows the title of the current window
-            "windowtitle": WindowTitle(config=config),
+            "window_title": WindowTitle(config),
             # LanguageBox: Displays the current language selection
             "language": LanguageBox(),
             # DateTime: Displays the current date and time
             "datetime": DateTimeBox(),
             # HyprSunset: Provides information about the sunset time based on location
-            "hyprsunset": HyprSunset(config=config).create(),
+            "hypr_sunset": HyprSunset(config).create(),
             # HyprIdle: Shows the idle time for the system
-            "hypridle": HyprIdle(config=config).create(),
+            "hypr_idle": HyprIdle(config).create(),
             # Battery: Displays the battery status with optional label and tooltip
-            "battery": Battery(
-                enable_label=battery_config["enable_label"],
-                enable_tooltip=battery_config["enable_tooltip"],
-                interval=battery_config["interval"],
-            ),
+            "battery": Battery(config),
             # Cpu: Displays CPU usage information with optional label and tooltip
-            "cpu": Cpu(
-                icon=cpu_config["icon"],
-                enable_label=cpu_config["enable_label"],
-                enable_tooltip=cpu_config["enable_tooltip"],
-                interval=cpu_config["interval"],
-            ),
+            "cpu": Cpu(config),
             # ClickCounter: Tracks the number of clicks on a widget or component
-            "clickcounter": ClickCounter(),
+            "click_counter": ClickCounter(),
             # Memory: Displays the system's memory usage
-            "memory": Memory(),
+            "memory": Memory(config),
             # Storage: Shows the system's storage usage (e.g., disk space)
-            "storage": Storage(),
+            "storage": Storage(config),
             # Weather: Displays the weather for a given city (e.g., Kathmandu)
-            "weather": Weather("kathmandu"),
+            "weather": Weather(config),
             # Player: Displays information about the current media player status
-            "player": Mpris(),
+            "player": Mpris(config),
             # Updates: Shows available system updates based on the OS
-            "updates": Updates(os=updates_config["os"]),
+            "updates": Updates(config),
         }
 
         layout = self.make_layout()
 
-        self.system_tray = SystemTray()
+        self.system_tray = self.widgets_list["system_tray"]
 
         self.status_container = WidgetContainer()
         self.status_container.add(VolumeWidget()) if AUDIO_WIDGET is True else None
 
-        self.battery = Battery(
-            enable_label=battery_config["enable_label"],
-            enable_tooltip=battery_config["enable_tooltip"],
-            interval=battery_config["interval"],
-        )
+        self.battery = self.widgets_list["battery"]
+        self.cpu = self.widgets_list["cpu"]
 
-        self.cpu = Cpu(
-            icon=cpu_config["icon"],
-            enable_label=cpu_config["enable_label"],
-            enable_tooltip=cpu_config["enable_tooltip"],
-            interval=cpu_config["interval"],
-        )
+        self.click_counter = self.widgets_list["clickcounter"]
 
-        self.click_counter = ClickCounter()
-
-        self.memory = Memory()
-        self.storage = Storage()
-        self.weather = Weather("kathmandu")
-        self.player = Mpris()
-        self.updates = Updates(os=updates_config["os"], icon=updates_config["icon"])
+        self.memory = self.widgets_list["memory"]
+        self.storage = self.widgets_list["storage"]
+        self.weather = self.widgets_list["weather"]
+        self.player = self.widgets_list["player"]
+        self.updates = self.widgets_list["updates"]
 
         self.children = CenterBox(
             name="panel-inner",

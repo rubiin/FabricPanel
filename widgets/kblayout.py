@@ -4,6 +4,9 @@ from fabric.utils import exec_shell_command
 from fabric.widgets.box import Box
 from fabric.widgets.label import Label
 
+from utils.config import BarConfig
+from utils.functions import text_icon
+
 # sourced from hyprpanel
 KBLAYOUT_MAP = {
     "Abkhazian (Russia)": "RU (Ab)",
@@ -595,14 +598,23 @@ KBLAYOUT_MAP = {
 class KeyboardLayout(Box):
     """A widget to display the current keyboard layout."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, config: BarConfig, **kwargs):
         super().__init__(name="keyboard", style_classes="panel-box", **kwargs)
 
-        self.kb_label = Label(label="")
+        self.config = config["keyboard"]
 
-        self.children = self.kb_label
+        # Create a TextIcon with the specified icon and size
+        self.icon = text_icon(
+            icon=self.config["icon"],
+            size=self.config["icon_size"],
+            props={"style_classes": "panel-text-icon"},
+        )
+
+        self.children = self.icon
+        self.kb_label = Label(label="0", style_classes="panel-text")
 
         self.data = json.loads(exec_shell_command("hyprctl devices -j"))
+
         self.get_keyboard()
 
     def get_keyboard(self):
@@ -616,5 +628,11 @@ class KeyboardLayout(Box):
             main_kb = keyboards[len(keyboards) - 1]
 
         layout = main_kb["active_keymap"]
-        self.set_tooltip_text(layout)
-        self.kb_label.set_label(f"󰌌 {KBLAYOUT_MAP[layout]}")
+
+        if self.config["enable_tooltip"]:
+            self.set_tooltip_text(layout)
+
+        # Update the label with the used storage if enabled
+        if self.config["enable_label"]:
+            self.kb_label.set_label(f"󰌌 {KBLAYOUT_MAP[layout]}")
+            self.children = (self.icon, self.kb_label)

@@ -11,33 +11,28 @@ from fabric.widgets.eventbox import EventBox
 from fabric.widgets.label import Label
 from loguru import logger
 
+from utils.config import BarConfig
 from utils.functions import text_icon
-from utils.icons import ICONS
+
 
 class Updates(EventBox):
     """A widget to display the number of available updates."""
 
     def __init__(
         self,
-        os: str,
-        icon: str = ICONS["updates"],
-        icon_size="14px",
-        interval: int = 30 * 60000,
-        enable_label=True,
-        enable_tooltip=True,
+        config: BarConfig,
         **kwargs,
     ):
         # Initialize the EventBox with specific name and style
         super().__init__(name="updates", **kwargs)
-        self.enable_label = enable_label
-        self.enable_tooltip = enable_tooltip
+        self.config = config["updates"]
+
         # Create a TextIcon with the specified icon and size
         self.text_icon = text_icon(
-            icon,
-            size=icon_size,
+            icon=self.config["icon"],
+            size=self.config["icon_size"],
             props={"style_classes": "panel-text-icon"},
         )
-        self.os = os
 
         # for some reason, the style class is not being applied to the eventbox
         self.box = Box(style_classes="panel-box")
@@ -48,11 +43,11 @@ class Updates(EventBox):
         self.update_level_label = Label(label="0", style_classes="panel-text")
 
         # Show initial value of 0 if label is enabled
-        if self.enable_label:
+        if self.config["enable_label"]:
             self.box.children = (self.text_icon, self.update_level_label)
 
         # Set up a repeater to call the update method at specified intervals
-        invoke_repeater(interval, self.update, initial_call=True)
+        invoke_repeater(self.config["interval"], self.update, initial_call=True)
 
         # Connect the button press event to the update method
         bulk_connect(
@@ -65,11 +60,11 @@ class Updates(EventBox):
         value = json.loads(value)
 
         # Update the label if enabled
-        if self.enable_label:
+        if self.config["enable_label"]:
             self.update_level_label.set_label(value["total"])
 
         # Update the tooltip if enabled
-        if self.enable_tooltip:
+        if self.config["enable_tooltip"]:
             self.set_tooltip_text(value["tooltip"])
         return True
 
@@ -81,7 +76,7 @@ class Updates(EventBox):
 
         # Execute the update script asynchronously and update values
         exec_shell_command_async(
-            f"{filename} -{self.os}",
+            f"{filename} -{self.config['os']}",
             lambda output: self.update_values(output),
         )
 

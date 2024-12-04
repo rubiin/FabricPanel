@@ -1,4 +1,3 @@
-
 from typing import List, TypedDict
 
 from utils.functions import read_config
@@ -6,84 +5,87 @@ from utils.functions import read_config
 # Default configuration values
 DEFAULT_CONFIG = {
     "layout": {
-        "left": ["workspaces", "windowtitle"],
+        "left": ["workspaces", "window_title"],
         "middle": ["datetime", "player"],
-        "right": ["weather", "battery","system_tray", "updates", "hypridle", "hyprsunset"]
+        "right": [
+            "weather",
+            "battery",
+            "system_tray",
+            "updates",
+            "hypridle",
+            "hyprsunset",
+        ],
     },
-    "hyprsunset": {
+    "hypr_sunset": {
         "temperature": "2800k",
         "enabled_icon": "󱩌",
         "disabled_icon": "󰛨",
         "icon_size": "12px",
         "enable_label": False,
-        "enable_tooltip": True
+        "enable_tooltip": True,
     },
-    "hypridle": {
+    "hypr_idle": {
         "enabled_icon": "",
         "disabled_icon": "",
         "icon_size": "12px",
         "enable_label": False,
-         "enable_tooltip": True
+        "enable_tooltip": True,
     },
     "battery": {
         "enable_label": True,
         "enable_tooltip": True,
-        "interval": 2000
+        "interval": 2000,
+        "hide_label_when_full": True,
     },
     "cpu": {
         "icon": "",
         "icon_size": "12px",
         "enable_label": False,
         "enable_tooltip": True,
-        "interval": 2000
+        "interval": 2000,
     },
     "memory": {
         "icon": "",
         "icon_size": "12px",
         "enable_label": False,
         "enable_tooltip": True,
-        "interval": 2000
+        "interval": 2000,
     },
     "storage": {
         "icon": "󰋊",
         "icon_size": "14px",
         "enable_label": False,
         "enable_tooltip": True,
-        "interval": 2000
+        "interval": 2000,
     },
-    "workspaces": {
-        "count": 8,
-        "occupied": True
+    "workspaces": {"count": 8, "occupied": True},
+    "window_title": {"length": 20, "enable_icon": True},
+    "updates": {"os": "arch", "icon": "󱧘", "icon_size": "14px"},
+    "weather": {"location": "Kathmandu"},
+    "keyboard": {
+        "icon": "󰌌",
+        "icon_size": "14px",
+        "enable_label": True,
+        "enable_tooltip": True,
     },
-    "window": {
-        "length": 20,
-        "enable_icon": True
+    "player": {
+        "length": 30,
+        "enable_tooltip": True,
     },
-    "updates": {
-        "os": "arch",
-        "icon": "󱧘",
-        "icon_size": "14px"
-    },
-    "weather": {
-        "location": "Kathmandu"
-    }
 }
-
-
-
-
-
-
 
 
 # Define the TypedDict types for various configurations
 
+
 class BaseConfig(TypedDict):
     """Common configuration for some sections"""
+
     icon_size: str
     enable_label: bool
     enable_tooltip: bool
     interval: int
+
 
 # Layout configuration for different sections of the bar
 class Layout(TypedDict):
@@ -95,7 +97,7 @@ class Layout(TypedDict):
 
 
 # Configuration for HyprSunset
-class HyprSunset(TypedDict,BaseConfig):
+class HyprSunset(TypedDict, BaseConfig):
     """Configuration for Window"""
 
     temperature: str
@@ -103,14 +105,12 @@ class HyprSunset(TypedDict,BaseConfig):
     disabled_icon: str
 
 
-
 # Configuration for HyprIdle
-class HyprIdle(TypedDict,BaseConfig):
+class HyprIdle(TypedDict, BaseConfig):
     """Configuration for hypridle"""
 
     enabled_icon: str
     disabled_icon: str
-
 
 
 # Configuration for Battery
@@ -119,14 +119,22 @@ class Battery(TypedDict):
 
     enable_label: bool
     enable_tooltip: bool
+    hide_label_when_full: bool
     interval: int
 
 
 # Configuration for CPU
-class Cpu(TypedDict,BaseConfig):
+class Cpu(TypedDict, BaseConfig):
     """Configuration for Cpu"""
 
     icon: str
+
+
+# Configuration for CPU
+class Player(TypedDict, BaseConfig):
+    """Configuration for bar player"""
+
+    length: int
 
 
 # Configuration for Memory
@@ -136,7 +144,6 @@ class Memory(TypedDict, BaseConfig):
     icon: str
 
 
-
 # Configuration for Storage
 class Storage(TypedDict, BaseConfig):
     """Configuration for storage"""
@@ -144,12 +151,12 @@ class Storage(TypedDict, BaseConfig):
     icon: str
 
 
-
 # Configuration for Workspaces
 class Workspaces(TypedDict):
     """Configuration for Workspaces"""
 
     count: int
+    occupied: bool
 
 
 # Configuration for Window
@@ -161,11 +168,11 @@ class WindowTitle(TypedDict):
 
 
 # Configuration for Updates
-class Updates(TypedDict,BaseConfig):
+class Updates(TypedDict, BaseConfig):
     """Configuration for Updates"""
+
     os: str
     icon: str
-
 
 
 # Configuration for Weather
@@ -178,8 +185,15 @@ class Weather(TypedDict):
     enable_label: bool
 
 
+# Configuration for Weather
+class Keyboard(TypedDict, BaseConfig):
+    """Configuration for keyboard"""
+
+    icon: str
+
+
 # Main configuration that includes all other configurations
-class Config(TypedDict):
+class BarConfig(TypedDict):
     """Main configuration"""
 
     layout: Layout
@@ -188,9 +202,11 @@ class Config(TypedDict):
     battery: Battery
     cpu: Cpu
     memory: Memory
+    keyboard: Keyboard
+    player: Player
     storage: Storage
     workspaces: Workspaces
-    window: WindowTitle
+    window_title: WindowTitle
     updates: Updates
     weather: Weather
 
@@ -214,4 +230,4 @@ for key, value in parsed_data.items():
 
 
 # Optionally, cast the parsed data to match our TypedDict using type hints
-config: Config = parsed_data
+config: BarConfig = parsed_data

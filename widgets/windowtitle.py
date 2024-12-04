@@ -4,7 +4,7 @@ from fabric.hyprland.widgets import ActiveWindow
 from fabric.utils import FormattedString, truncate
 from fabric.widgets.box import Box
 
-from utils.config import Config
+from utils.config import BarConfig
 
 # Mapping of window classes to icons and titles
 WINDOW_TITLE_MAP = [
@@ -107,10 +107,12 @@ WINDOW_TITLE_MAP = [
 class WindowTitle(Box):
     """a widget that displays the title of the active window."""
 
-    def __init__(self, config: Config, **kwargs):
+    def __init__(self, config: BarConfig, **kwargs):
         super().__init__(style_classes="panel-box", name="window-box", **kwargs)
+
         # Store the configuration for the window title
-        self.config = config["window"]
+        self.config = config["window_title"]
+
         # Create an ActiveWindow widget to track the active window
         self.window = ActiveWindow(
             name="window",
@@ -119,6 +121,7 @@ class WindowTitle(Box):
                 get_title=self.get_title,
             ),
         )
+
         # Add the ActiveWindow widget as a child
         self.children = self.window
 
