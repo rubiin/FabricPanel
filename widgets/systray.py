@@ -5,6 +5,8 @@ from fabric.widgets.image import Image
 from gi.repository import Gdk, GdkPixbuf, Gray, Gtk
 from loguru import logger
 
+from utils.config import BarConfig
+
 gi.require_version("Gray", "0.1")
 gi.require_version("Gtk", "3.0")
 
@@ -12,9 +14,11 @@ gi.require_version("Gtk", "3.0")
 class SystemTray(Box):
     """A widget to display the system tray items."""
 
-    def __init__(self, pixel_size=20, **kwargs) -> None:
+    def __init__(self, config: BarConfig, **kwargs) -> None:
         super().__init__(name="system-tray", style_classes="panel-box", **kwargs)
-        self.pixel_size = pixel_size
+
+        self.config = config["system_tray"]
+
         self.watcher = Gray.Watcher()
         self.watcher.connect("item-added", self.on_item_added)
 
@@ -41,25 +45,25 @@ class SystemTray(Box):
 
         # convert the pixmap to a pixbuf
         pixbuf: GdkPixbuf.Pixbuf = (
-            pixmap.as_pixbuf(self.pixel_size, GdkPixbuf.InterpType.HYPER)
+            pixmap.as_pixbuf(self.config["icon_size"], GdkPixbuf.InterpType.HYPER)
             if pixmap is not None
             else Gtk.IconTheme()
             .get_default()
             .load_icon(
                 item.get_icon_name(),
-                self.pixel_size,
+                self.config["icon_size"],
                 Gtk.IconLookupFlags.FORCE_SIZE,
             )
         )
 
         # resize/scale the pixbuf
         pixbuf.scale_simple(
-            self.pixel_size,
-            self.pixel_size,
+            self.config["icon_size"],
+            self.config["icon_size"],
             GdkPixbuf.InterpType.HYPER,
         )
 
-        image = Image(pixbuf=pixbuf, pixel_size=self.pixel_size)
+        image = Image(pixbuf=pixbuf, pixel_size=self.config["icon_size"])
         button.set_image(image)
 
         return button

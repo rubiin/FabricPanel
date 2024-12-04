@@ -83,7 +83,9 @@ class StatusBar(Window):
         self.system_tray = self.widgets_list["system_tray"]
 
         self.status_container = WidgetContainer()
-        self.status_container.add(VolumeWidget(config)) if AUDIO_WIDGET is True else None
+        self.status_container.add(
+            VolumeWidget(config)
+        ) if AUDIO_WIDGET is True else None
 
         self.battery = self.widgets_list["battery"]
         self.cpu = self.widgets_list["cpu"]

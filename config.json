@@ -76,5 +76,8 @@
   },
   "player": {
     "length": 20
+  },
+  "system_tray": {
+    "icon_size": 20
   }
 }

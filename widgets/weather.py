@@ -20,6 +20,7 @@ class Weather(Box):
         super().__init__(name="weather", style_classes="panel-box")
 
         self.config = config["weather"]
+
         self.weather_label = Label(
             label="Fetching weather...",
             style_classes="panel-text",

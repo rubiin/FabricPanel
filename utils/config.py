@@ -86,6 +86,7 @@ DEFAULT_CONFIG = {
     },
     "language": {"length": 3},
     "task_bar": {"icon_size": 22},
+    "system_tray": {"icon_size": 22},
 }
 
 
@@ -116,6 +117,12 @@ class HyprSunset(TypedDict, BaseConfig):
 
 class TaskBar(TypedDict):
     """Configuration for taskbar"""
+
+    icon_size: int
+
+
+class SystemTray(TypedDict):
+    """Configuration for system tray"""
 
     icon_size: int
 
@@ -220,6 +227,7 @@ class BarConfig(TypedDict):
     window_title: WindowTitle
     updates: Updates
     weather: Weather
+    system_tray: SystemTray
 
 
 # Read the configuration from the JSON file

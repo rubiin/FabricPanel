@@ -37,7 +37,6 @@ class TaskBar(Box):
 
         self.config = config["task_bar"]
 
-
         self.icon_theme = Gtk.IconTheme.get_default()
 
         self.set_visible(False)
