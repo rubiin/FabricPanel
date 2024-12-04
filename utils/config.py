@@ -2,6 +2,10 @@ from typing import List, TypedDict
 
 from utils.functions import read_config
 
+
+# Default poll interval for widgets that need not be updated frequently
+high_poll_interval = 1000 * 60 * 10  # 10 minutes
+
 # Default configuration values
 DEFAULT_CONFIG = {
     "layout": {
@@ -21,6 +25,7 @@ DEFAULT_CONFIG = {
         "enabled_icon": "󱩌",
         "disabled_icon": "󰛨",
         "icon_size": "12px",
+        "interval": 2000,
         "enable_label": True,
         "enable_tooltip": True,
     },
@@ -28,6 +33,7 @@ DEFAULT_CONFIG = {
         "enabled_icon": "",
         "disabled_icon": "",
         "icon_size": "12px",
+        "interval": 2000,
         "enable_label": True,
         "enable_tooltip": True,
     },
@@ -40,37 +46,37 @@ DEFAULT_CONFIG = {
     "cpu": {
         "icon": "",
         "icon_size": "12px",
+        "interval": 2000,
         "enable_label": True,
         "enable_tooltip": True,
-        "interval": 2000,
     },
     "memory": {
         "icon": "",
+        "interval": 2000,
         "icon_size": "12px",
         "enable_label": True,
         "enable_tooltip": True,
-        "interval": 2000,
     },
     "storage": {
         "icon": "󰋊",
+        "interval": 2000,
         "icon_size": "14px",
         "enable_label": True,
         "enable_tooltip": True,
-        "interval": 2000,
     },
     "workspaces": {"count": 8, "occupied": True},
     "window_title": {"length": 20, "enable_icon": True},
     "updates": {
         "os": "arch",
         "icon": "󱧘",
-        "interval": 20000,
         "icon_size": "14px",
+        "interval": high_poll_interval,
         "enable_tooltip": True,
         "enable_label": True,
     },
     "weather": {
         "location": "Kathmandu",
-        "interval": 60000,
+        "interval": high_poll_interval,
         "enable_tooltip": True,
         "enable_label": True,
     },
