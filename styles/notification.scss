@@ -52,7 +52,7 @@
 
 .close-button {
   padding: 0.2em;
-  border-radius: 100px;
+  border-radius: variables.$border-radius;
 
   &:hover {
     box-shadow: none;

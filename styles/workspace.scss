@@ -11,7 +11,7 @@ $workspace-transition: all 0.4s cubic-bezier(0.55, -0.68, 0.48, 1.682);
   & > button {
     padding: 0 0.5rem;
     transition: padding 0.05s steps(8);
-    border-radius: 100px;
+    border-radius: variables.$border-radius;
 
     &:hover {
       background-color: variables.$ws-hover;
