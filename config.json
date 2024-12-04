@@ -67,5 +67,14 @@
     "icon_size": "14px",
     "enable_label": false,
     "enable_tooltip": true
+  },
+  "task_bar": {
+    "icon_size": 22
+  },
+  "language":{
+    "length": 2
+  },
+  "player": {
+    "length": 20
   }
 }

@@ -48,12 +48,12 @@ class StatusBar(Window):
             # Workspaces: Displays the list of workspaces or desktops
             "workspaces": WorkSpaces(config),
             "system_tray": SystemTray(config),
-            "taskbar": TaskBar(),
+            "task_bar": TaskBar(config),
             "keyboard": KeyboardLayout(config),
             # WindowTitle: Shows the title of the current window
             "window_title": WindowTitle(config),
             # LanguageBox: Displays the current language selection
-            "language": LanguageBox(),
+            "language": LanguageBox(config),
             # DateTime: Displays the current date and time
             "datetime": DateTimeBox(),
             # HyprSunset: Provides information about the sunset time based on location
@@ -83,12 +83,12 @@ class StatusBar(Window):
         self.system_tray = self.widgets_list["system_tray"]
 
         self.status_container = WidgetContainer()
-        self.status_container.add(VolumeWidget()) if AUDIO_WIDGET is True else None
+        self.status_container.add(VolumeWidget(config)) if AUDIO_WIDGET is True else None
 
         self.battery = self.widgets_list["battery"]
         self.cpu = self.widgets_list["cpu"]
 
-        self.click_counter = self.widgets_list["clickcounter"]
+        self.click_counter = self.widgets_list["click_counter"]
 
         self.memory = self.widgets_list["memory"]
         self.storage = self.widgets_list["storage"]
@@ -130,12 +130,12 @@ class StatusBar(Window):
 
         # firset set of widgets (Left)
         layout["left_children"].extend(
-            self.widgets_list[widget] for widget in self.config["layout"]["left"]
+            self.widgets_list[widget] for widget in config["layout"]["left"]
         )
 
         # second set of widgets (Center)
         layout["middle_children"].extend(
-            self.widgets_list[widget] for widget in self.config["layout"]["middle"]
+            self.widgets_list[widget] for widget in config["layout"]["middle"]
         )
 
         return layout

@@ -6,6 +6,8 @@ from fabric.widgets.eventbox import EventBox
 from fabric.widgets.label import Label
 from fabric.widgets.overlay import Overlay
 
+from utils.config import BarConfig
+
 AUDIO_WIDGET = True
 
 if AUDIO_WIDGET is True:
@@ -19,7 +21,7 @@ if AUDIO_WIDGET is True:
 class VolumeWidget(Box):
     """a widget that displays and controls the volume."""
 
-    def __init__(self, **kwargs):
+    def __init__(self,config: BarConfig, **kwargs):
         super().__init__(name="volume", style_classes="panel-box", **kwargs)
         # Initialize the audio service
         self.audio = Audio()

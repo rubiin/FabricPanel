@@ -10,6 +10,8 @@ from fabric.widgets.image import Image
 from gi.repository import GdkPixbuf, GLib, Gtk
 from loguru import logger
 
+from utils.config import BarConfig
+
 
 class PagerClient(TypedDict):
     """A dictionary type for pager client information."""
@@ -24,7 +26,7 @@ class PagerClient(TypedDict):
 class TaskBar(Box):
     """A widget to display the taskbar items."""
 
-    def __init__(self, icon_size: int = 24, **kwargs):
+    def __init__(self, config: BarConfig, **kwargs):
         super().__init__(
             orientation="h",
             spacing=7,
@@ -32,7 +34,10 @@ class TaskBar(Box):
             **kwargs,
         )
         self.connection = get_hyprland_connection()
-        self.icon_size = icon_size
+
+        self.config = config["task_bar"]
+
+
         self.icon_theme = Gtk.IconTheme.get_default()
 
         self.set_visible(False)
@@ -108,7 +113,7 @@ class TaskBar(Box):
         else:
             pixbuf = self.load_icon(window_class, fallback_icon)
 
-        return Image(pixbuf=pixbuf, size=self.icon_size)
+        return Image(pixbuf=pixbuf, size=self.config["icon_size"])
 
     def get_icon_from_desktop_entry(self, window_class: str) -> str:
         for data_dir in GLib.get_system_data_dirs():
@@ -141,13 +146,13 @@ class TaskBar(Box):
         try:
             pixbuf = self.icon_theme.load_icon(
                 icon_name,
-                self.icon_size,
+                self.config["icon_size"],
                 Gtk.IconLookupFlags.FORCE_SIZE,
             )
         except Exception:
             pixbuf = self.icon_theme.load_icon(
                 fallback_icon,
-                self.icon_size,
+                self.config["icon_size"],
                 Gtk.IconLookupFlags.FORCE_SIZE,
             )
         return pixbuf

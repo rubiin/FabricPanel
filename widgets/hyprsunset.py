@@ -1,15 +1,16 @@
 from fabric.widgets.button import Button
 
 from shared.buttontoggle import CommandSwitcher
+from utils.config import BarConfig
 
 
 class HyprSunset(Button):
     """A widget to control the hyprsunset command."""
 
-    def __init__(self, config, **kwargs):
+    def __init__(self, config: BarConfig, **kwargs):
         super().__init__(**kwargs)
         # Store the configuration for hyprsunset
-        self.config = config["hyprsunset"]
+        self.config = config["hypr_sunset"]
 
         # Set the command to adjust the screen temperature
         self.command = f"hyprsunset -t {self.config['temperature']}"

@@ -12,8 +12,8 @@ DEFAULT_CONFIG = {
             "battery",
             "system_tray",
             "updates",
-            "hypridle",
-            "hyprsunset",
+            "hypr_idle",
+            "hypr_sunset",
         ],
     },
     "hypr_sunset": {
@@ -21,14 +21,14 @@ DEFAULT_CONFIG = {
         "enabled_icon": "󱩌",
         "disabled_icon": "󰛨",
         "icon_size": "12px",
-        "enable_label": False,
+        "enable_label": True,
         "enable_tooltip": True,
     },
     "hypr_idle": {
         "enabled_icon": "",
         "disabled_icon": "",
         "icon_size": "12px",
-        "enable_label": False,
+        "enable_label": True,
         "enable_tooltip": True,
     },
     "battery": {
@@ -40,28 +40,40 @@ DEFAULT_CONFIG = {
     "cpu": {
         "icon": "",
         "icon_size": "12px",
-        "enable_label": False,
+        "enable_label": True,
         "enable_tooltip": True,
         "interval": 2000,
     },
     "memory": {
         "icon": "",
         "icon_size": "12px",
-        "enable_label": False,
+        "enable_label": True,
         "enable_tooltip": True,
         "interval": 2000,
     },
     "storage": {
         "icon": "󰋊",
         "icon_size": "14px",
-        "enable_label": False,
+        "enable_label": True,
         "enable_tooltip": True,
         "interval": 2000,
     },
     "workspaces": {"count": 8, "occupied": True},
     "window_title": {"length": 20, "enable_icon": True},
-    "updates": {"os": "arch", "icon": "󱧘", "icon_size": "14px"},
-    "weather": {"location": "Kathmandu"},
+    "updates": {
+        "os": "arch",
+        "icon": "󱧘",
+        "interval": 20000,
+        "icon_size": "14px",
+        "enable_tooltip": True,
+        "enable_label": True,
+    },
+    "weather": {
+        "location": "Kathmandu",
+        "interval": 20000,
+        "enable_tooltip": True,
+        "enable_label": True,
+    },
     "keyboard": {
         "icon": "󰌌",
         "icon_size": "14px",
@@ -72,10 +84,9 @@ DEFAULT_CONFIG = {
         "length": 30,
         "enable_tooltip": True,
     },
+    "language": {"length": 3},
+    "task_bar": {"icon_size": 22},
 }
-
-
-# Define the TypedDict types for various configurations
 
 
 class BaseConfig(TypedDict):
@@ -87,25 +98,28 @@ class BaseConfig(TypedDict):
     interval: int
 
 
-# Layout configuration for different sections of the bar
 class Layout(TypedDict):
-    """Configuration for Window"""
+    """ayout configuration for different sections of the bar"""
 
     left: List[str]
     middle: List[str]
     right: List[str]
 
 
-# Configuration for HyprSunset
 class HyprSunset(TypedDict, BaseConfig):
-    """Configuration for Window"""
+    """Configuration for hyprsunset"""
 
     temperature: str
     enabled_icon: str
     disabled_icon: str
 
 
-# Configuration for HyprIdle
+class TaskBar(TypedDict):
+    """Configuration for taskbar"""
+
+    icon_size: int
+
+
 class HyprIdle(TypedDict, BaseConfig):
     """Configuration for hypridle"""
 
@@ -113,7 +127,6 @@ class HyprIdle(TypedDict, BaseConfig):
     disabled_icon: str
 
 
-# Configuration for Battery
 class Battery(TypedDict):
     """Configuration for battery"""
 
@@ -123,35 +136,30 @@ class Battery(TypedDict):
     interval: int
 
 
-# Configuration for CPU
 class Cpu(TypedDict, BaseConfig):
     """Configuration for Cpu"""
 
     icon: str
 
 
-# Configuration for CPU
 class Player(TypedDict, BaseConfig):
     """Configuration for bar player"""
 
     length: int
 
 
-# Configuration for Memory
 class Memory(TypedDict, BaseConfig):
     """Configuration for window"""
 
     icon: str
 
 
-# Configuration for Storage
 class Storage(TypedDict, BaseConfig):
     """Configuration for storage"""
 
     icon: str
 
 
-# Configuration for Workspaces
 class Workspaces(TypedDict):
     """Configuration for Workspaces"""
 
@@ -159,7 +167,6 @@ class Workspaces(TypedDict):
     occupied: bool
 
 
-# Configuration for Window
 class WindowTitle(TypedDict):
     """Configuration for Window"""
 
@@ -167,15 +174,13 @@ class WindowTitle(TypedDict):
     enable_icon: bool
 
 
-# Configuration for Updates
 class Updates(TypedDict, BaseConfig):
-    """Configuration for Updates"""
+    """Configuration for updates"""
 
     os: str
     icon: str
 
 
-# Configuration for Weather
 class Weather(TypedDict):
     """Configuration for weather"""
 
@@ -185,23 +190,29 @@ class Weather(TypedDict):
     enable_label: bool
 
 
-# Configuration for Weather
 class Keyboard(TypedDict, BaseConfig):
     """Configuration for keyboard"""
 
     icon: str
 
 
-# Main configuration that includes all other configurations
+class Language(TypedDict):
+    """Configuration for language"""
+
+    length: int
+
+
 class BarConfig(TypedDict):
-    """Main configuration"""
+    """Main configuration that includes all other configurations"""
 
     layout: Layout
-    hyprsunset: HyprSunset
-    hypridle: HyprIdle
+    hypr_sunset: HyprSunset
+    hypr_idle: HyprIdle
     battery: Battery
     cpu: Cpu
     memory: Memory
+    language: Language
+    task_bar: TaskBar
     keyboard: Keyboard
     player: Player
     storage: Storage

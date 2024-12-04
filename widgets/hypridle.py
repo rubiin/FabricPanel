@@ -9,7 +9,7 @@ class HyprIdle(Button):
     def __init__(self, config, **kwargs):
         super().__init__(**kwargs)
         # Store the configuration for hypridle
-        self.config = config["hypridle"]
+        self.config = config["hypr_idle"]
 
         # Set the command to hypridle
         self.command = "hypridle"

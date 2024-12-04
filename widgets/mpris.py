@@ -15,7 +15,7 @@ class Mpris(EventBox):
     def __init__(
         self,
         config: BarConfig,
-    ) -> None:
+    ):
         # Initialize the EventBox with specific name and style
         super().__init__(name="mpris")
         self.config = config["player"]
