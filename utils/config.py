@@ -70,7 +70,7 @@ DEFAULT_CONFIG = {
     },
     "weather": {
         "location": "Kathmandu",
-        "interval": 20000,
+        "interval": 60000,
         "enable_tooltip": True,
         "enable_label": True,
     },

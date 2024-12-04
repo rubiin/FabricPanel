@@ -33,7 +33,7 @@ class Weather(Box):
     def update_label(self):
         weather_thread = threading.Thread(
             target=self.fetch_weather_in_thread,
-            args=(self.config["location"]),
+            args=(self.config["location"],),
         )
         weather_thread.start()
         # Continue running the main program (non-blocking)
@@ -49,6 +49,6 @@ class Weather(Box):
         self.weather_label.set_label(f"{res['icon']} {res['temperature']}")
 
         # Update the tooltip with the city and weather condition if enabled
-        if self.enable_tooltip:
+        if self.config["enable_tooltip"]:
             self.set_tooltip_text(f"{res['city']}, {res['condition']}".strip("'"))
         return True
