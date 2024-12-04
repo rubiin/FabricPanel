@@ -128,14 +128,14 @@ class NotificationWidget(EventBox):
                 Box(
                     v_expand=True,
                     v_align="center",
-                    children= CustomImage(
-                    pixbuf=image_pixbuf.scale_simple(
-                        NOTIFICATION_IMAGE_SIZE,
-                        NOTIFICATION_IMAGE_SIZE,
-                        GdkPixbuf.InterpType.BILINEAR,
+                    children=CustomImage(
+                        pixbuf=image_pixbuf.scale_simple(
+                            NOTIFICATION_IMAGE_SIZE,
+                            NOTIFICATION_IMAGE_SIZE,
+                            GdkPixbuf.InterpType.BILINEAR,
+                        ),
+                        style_classes="image",
                     ),
-                    style_classes="image",
-                ),
                 )
             )
 
