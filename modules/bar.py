@@ -2,23 +2,17 @@ from fabric.widgets.box import Box
 from fabric.widgets.centerbox import CenterBox
 from fabric.widgets.wayland import WaylandWindow as Window
 
-from shared.widget_conrainer import WidgetContainer
 from utils.config import config
 from widgets import (
-    AUDIO_WIDGET,
     Battery,
-    ClickCounter,
     Cpu,
     DateTimeBox,
-    HyprIdle,
-    HyprSunset,
     KeyboardLayout,
     LanguageBox,
     Memory,
     Mpris,
     Storage,
     Updates,
-    VolumeWidget,
     Weather,
     WindowTitle,
     WorkSpaces,
@@ -46,57 +40,41 @@ class StatusBar(Window):
         # TODO: fix this . This is initialized by default
         self.widgets_list = {
             # Workspaces: Displays the list of workspaces or desktops
-            "workspaces": WorkSpaces(config),
-            "system_tray": SystemTray(config),
-            "task_bar": TaskBar(config),
-            "keyboard": KeyboardLayout(config),
+            "workspaces": WorkSpaces,
+            "system_tray": SystemTray,
+            "task_bar": TaskBar,
+            "keyboard": KeyboardLayout,
             # WindowTitle: Shows the title of the current window
-            "window_title": WindowTitle(config),
+            "window_title": WindowTitle,
             # LanguageBox: Displays the current language selection
-            "language": LanguageBox(config),
+            "language": LanguageBox,
             # DateTime: Displays the current date and time
-            "datetime": DateTimeBox(),
+            "datetime": DateTimeBox,
             # HyprSunset: Provides information about the sunset time based on location
-            "hypr_sunset": HyprSunset(config).create(),
-            # HyprIdle: Shows the idle time for the system
-            "hypr_idle": HyprIdle(config).create(),
+            # "hypr_sunset": HyprSunset.create(),
+            # # HyprIdle: Shows the idle time for the system
+            # "hypr_idle": HyprIdle.create(),
             # Battery: Displays the battery status with optional label and tooltip
-            "battery": Battery(config),
+            "battery": Battery,
             # Cpu: Displays CPU usage information with optional label and tooltip
-            "cpu": Cpu(config),
-            # ClickCounter: Tracks the number of clicks on a widget or component
-            "click_counter": ClickCounter(),
+            "cpu": Cpu,
+            # # ClickCounter: Tracks the number of clicks on a widget or component
+            # "click_counter": ClickCounter(),
             # Memory: Displays the system's memory usage
-            "memory": Memory(config),
+            "memory": Memory,
             # Storage: Shows the system's storage usage (e.g., disk space)
-            "storage": Storage(config),
+            "storage": Storage,
             # Weather: Displays the weather for a given city (e.g., Kathmandu)
-            "weather": Weather(config),
+            "weather": Weather,
             # Player: Displays information about the current media player status
-            "player": Mpris(config),
+            "player": Mpris,
             # Updates: Shows available system updates based on the OS
-            "updates": Updates(config),
+            "updates": Updates,
         }
 
         layout = self.make_layout()
 
-        self.system_tray = self.widgets_list["system_tray"]
 
-        self.status_container = WidgetContainer()
-        self.status_container.add(
-            VolumeWidget(config)
-        ) if AUDIO_WIDGET is True else None
-
-        self.battery = self.widgets_list["battery"]
-        self.cpu = self.widgets_list["cpu"]
-
-        self.click_counter = self.widgets_list["click_counter"]
-
-        self.memory = self.widgets_list["memory"]
-        self.storage = self.widgets_list["storage"]
-        self.weather = self.widgets_list["weather"]
-        self.player = self.widgets_list["player"]
-        self.updates = self.widgets_list["updates"]
 
         self.children = CenterBox(
             name="panel-inner",
@@ -116,12 +94,7 @@ class StatusBar(Window):
                 name="end-container",
                 spacing=4,
                 orientation="h",
-                children=[
-                    self.status_container,
-                    self.updates,
-                    self.battery,
-                    self.system_tray,
-                ],
+                children=layout["right_children"],
             ),
         )
 
@@ -132,12 +105,18 @@ class StatusBar(Window):
 
         # firset set of widgets (Left)
         layout["left_children"].extend(
-            self.widgets_list[widget] for widget in config["layout"]["left"]
+           self.widgets_list[widget](config) for widget in config["layout"]["left"]
         )
 
         # second set of widgets (Center)
         layout["middle_children"].extend(
-            self.widgets_list[widget] for widget in config["layout"]["middle"]
+            self.widgets_list[widget](config) for widget in config["layout"]["middle"]
         )
+
+             # second set of widgets (Center)
+        layout["right_children"].extend(
+            self.widgets_list[widget](config) for widget in config["layout"]["right"]
+        )
+
 
         return layout

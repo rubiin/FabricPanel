@@ -2,7 +2,7 @@
   "layout": {
     "left": ["workspaces", "window_title"],
     "middle": ["datetime", "player"],
-    "right": ["cpu", "memory"]
+    "right": ["updates", "battery", "system_tray"]
   },
   "hypr_sunset": {
     "temperature": "2800k",
@@ -71,7 +71,7 @@
   "task_bar": {
     "icon_size": 22
   },
-  "language":{
+  "language": {
     "length": 2
   },
   "player": {
